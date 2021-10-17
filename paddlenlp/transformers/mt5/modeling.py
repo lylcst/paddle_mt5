@@ -11,18 +11,9 @@ import paddle.nn.functional as F
 from .. import PretrainedModel, register_base_model
 
 __all__ = [
-    "MT5Model",
-    "MT5EncoderModel",
+    "MT5Model",,
     "MT5ForConditionalGeneration",
-    "T5Config",
-    "T5LayerNorm",
-    "T5Attention",
-    "T5DenseReluDense",
-    "T5LayerSelfAttention",
-    "T5LayerCrossAttention",
-    "T5Block",
     "T5Model",
-    "MT5Model",
     "T5EncoderModel",
     "MT5EncoderModel"
 ]
@@ -65,49 +56,6 @@ ACT2FN = {
     "linear": linear_act,
     "swish": swish,
 }
-
-
-class T5Config():
-
-    model_type = "t5"
-    keys_to_ignore_at_inference = ["past_key_values"]
-    attribute_map = {"hidden_size": "d_model", "num_attention_heads": "num_heads", "num_hidden_layers": "num_layers"}
-
-    def __init__(
-        self,
-        vocab_size=32128,
-        d_model=512,
-        d_kv=64,
-        d_ff=2048,
-        num_layers=6,
-        num_decoder_layers=None,
-        num_heads=8,
-        relative_attention_num_buckets=32,
-        dropout_rate=0.1,
-        layer_norm_epsilon=1e-6,
-        initializer_factor=1.0,
-        feed_forward_proj="relu",
-        is_encoder_decoder=True,
-        use_cache=True,
-        pad_token_id=0,
-        eos_token_id=1,
-        **kwargs
-    ):
-        self.vocab_size = vocab_size
-        self.d_model = d_model
-        self.d_kv = d_kv
-        self.d_ff = d_ff
-        self.num_layers = num_layers
-        self.num_decoder_layers = (
-            num_decoder_layers if num_decoder_layers is not None else self.num_layers
-        )  # default = symmetry
-        self.num_heads = num_heads
-        self.relative_attention_num_buckets = relative_attention_num_buckets
-        self.dropout_rate = dropout_rate
-        self.layer_norm_epsilon = layer_norm_epsilon
-        self.initializer_factor = initializer_factor
-        self.feed_forward_proj = feed_forward_proj
-        self.use_cache = use_cache
 
 class T5LayerNorm(nn.Layer):
     def __init__(self, hidden_size, eps=1e-6):
