@@ -847,17 +847,6 @@ class T5Stack(T5PreTrainedModel):
                         embed_tokens=None,
                         ):
         super().__init__()
-        # super().__init__(d_model=d_model, 
-        #                 d_ff=d_ff, 
-        #                 d_kv=d_kv,
-        #                 num_heads=num_heads,
-        #                 num_layers=num_layers,
-        #                 dropout_rate=dropout_rate,
-        #                 feed_forward_proj=feed_forward_proj, 
-        #                 is_decoder=is_decoder,
-        #                 relative_attention_num_buckets=relative_attention_num_buckets,
-        #                 layer_norm_epsilon=layer_norm_epsilon, 
-        #                 has_relative_attention_bias=has_relative_attention_bias)
         self.d_model = d_model
         self.d_kv = d_kv
         self.d_ff = d_ff
@@ -930,8 +919,6 @@ class T5Stack(T5PreTrainedModel):
             err_msg_prefix = "decoder_" if self.is_decoder else ""
             raise ValueError(f"You have to specify either {err_msg_prefix}input_ids or {err_msg_prefix}inputs_embeds")
 
-        # extended_attention_mask = self.get_extended_attention_mask(attention_mask, input_shape, inputs_embeds)
-
         batch_size, seq_length = input_shape
 
         if attention_mask is None:
@@ -980,15 +967,6 @@ class T5Stack(T5PreTrainedModel):
 
             hidden_states = layer_outputs[0]
 
-            # position_bias = layer_outputs[2]
-            # if self.is_decoder and encoder_hidden_states is not None:
-            #     encoder_decoder_position_bias = layer_outputs[4 if output_attentions else 3]
-
-            # if output_attentions:
-            #     all_attentions = all_attentions + (layer_outputs[3],)
-            #     if self.is_decoder:
-            #         all_cross_attentions = all_cross_attentions + (layer_outputs[5],)
-
         hidden_states = self.final_layer_norm(hidden_states)
         hidden_states = self.dropout(hidden_states)
 
@@ -1019,12 +997,6 @@ class T5Model(T5PreTrainedModel):
 
         self.initializer_factor = initializer_factor
         self.shared = nn.Embedding(vocab_size, d_model)
-
-        # encoder_config = copy.deepcopy(config)
-        # encoder_config.is_decoder = False
-        # encoder_config.is_encoder_decoder = False
-        # self.encoder = T5Stack(encoder_config, self.shared)
-
         self.encoder = T5Stack(d_model=d_model, 
                                 d_ff=d_ff, 
                                 d_kv=d_kv,
@@ -1040,13 +1012,6 @@ class T5Model(T5PreTrainedModel):
                                 has_relative_attention_bias=has_relative_attention_bias,
                                 embed_tokens=self.shared
                                 )
-
-        # decoder_config = copy.deepcopy(config)
-        # decoder_config.is_decoder = True
-        # decoder_config.is_encoder_decoder = False
-        # decoder_config.num_layers = config.num_decoder_layers
-        # self.decoder = T5Stack(decoder_config, self.shared)
-
         self.decoder = T5Stack(d_model=d_model, 
                                 d_ff=d_ff, 
                                 d_kv=d_kv,
@@ -1090,12 +1055,10 @@ class T5Model(T5PreTrainedModel):
         decoder_head_mask=None,
         cross_attn_head_mask=None,
         encoder_outputs=None,
-        # past_key_values=None,
         inputs_embeds=None,
         decoder_inputs_embeds=None,
         output_attentions=None,
-        output_hidden_states=None,
-        # return_dict=None,
+        output_hidden_states=None
     ):
 
         # FutureWarning: head_mask was separated into two input args - head_mask, decoder_head_mask
@@ -1112,8 +1075,7 @@ class T5Model(T5PreTrainedModel):
                 inputs_embeds=inputs_embeds,
                 head_mask=head_mask,
                 output_attentions=output_attentions,
-                output_hidden_states=output_hidden_states,
-                # return_dict=return_dict,
+                output_hidden_states=output_hidden_states
             )
         elif return_dict and not isinstance(encoder_outputs, BaseModelOutput):
             encoder_outputs = BaseModelOutput(
@@ -1127,11 +1089,9 @@ class T5Model(T5PreTrainedModel):
             input_ids=decoder_input_ids,
             attention_mask=decoder_attention_mask,
             inputs_embeds=decoder_inputs_embeds,
-            # past_key_values=past_key_values,
             encoder_hidden_states=hidden_states,
             encoder_attention_mask=attention_mask,
             head_mask=decoder_head_mask,
-            # cross_attn_head_mask=cross_attn_head_mask,
             output_attentions=output_attentions,
             output_hidden_states=output_hidden_states,
         )
@@ -1228,9 +1188,6 @@ class T5ForConditionalGeneration(T5PreTrainedModel):
             )
 
         hidden_states = encoder_outputs[0]
-
-        # if self.model_parallel:
-        #     paddle.device.set_device(self.decoder.first_device)
 
         if labels is not None and decoder_input_ids is None and decoder_inputs_embeds is None:
             # get decoder inputs from shifting lm labels to the right
@@ -1418,21 +1375,6 @@ class T5EncoderModel(T5PreTrainedModel):
 
 
 class MT5Model(T5Model):
-    r"""
-    This class overrides :class:`~transformers.T5Model`. Please check the superclass for the appropriate documentation
-    alongside usage examples.
-    Examples::
-        >>> from transformers import MT5Model, T5Tokenizer
-        >>> model = MT5Model.from_pretrained("google/mt5-small")
-        >>> tokenizer = T5Tokenizer.from_pretrained("google/mt5-small")
-        >>> article = "UN Offizier sagt, dass weiter verhandelt werden muss in Syrien."
-        >>> summary = "Weiter Verhandlung in Syrien."
-        >>> inputs = tokenizer(article, return_tensors="pt")
-        >>> with tokenizer.as_target_tokenizer():
-        ...     labels = tokenizer(summary, return_tensors="pt")
-        >>> outputs = model(input_ids=inputs["input_ids"], decoder_input_ids=labels["input_ids"])
-        >>> hidden_states = outputs.last_hidden_state
-    """
     model_type = "mt5"
 
 class MT5ForConditionalGeneration(T5ForConditionalGeneration):
@@ -1440,17 +1382,4 @@ class MT5ForConditionalGeneration(T5ForConditionalGeneration):
 
 
 class MT5EncoderModel(T5EncoderModel):
-    r"""
-    This class overrides :class:`~transformers.T5EncoderModel`. Please check the superclass for the appropriate
-    documentation alongside usage examples.
-    Examples::
-        >>> from transformers import MT5EncoderModel, T5Tokenizer
-        >>> model = MT5EncoderModel.from_pretrained("google/mt5-small")
-        >>> tokenizer = T5Tokenizer.from_pretrained("google/mt5-small")
-        >>> article = "UN Offizier sagt, dass weiter verhandelt werden muss in Syrien."
-        >>> input_ids = tokenizer(article, return_tensors="pt").input_ids
-        >>> outputs = model(input_ids)
-        >>> hidden_state = outputs.last_hidden_state
-    """
-
     model_type = "mt5"
