@@ -704,6 +704,22 @@ class T5PreTrainedModel(PretrainedModel):
     }
 
     resource_files_names = {"model_state": "model_state.pdparams"}
+    
+    pretrained_resource_files_map = {
+    "model_state": {
+        "mt5-small":
+            "https://paddlenlp.bj.bcebos.com/models/transformers/albert/albert-base-v1.pdparams",
+        "mt5-base":
+            "https://paddlenlp.bj.bcebos.com/models/transformers/albert/albert-large-v1.pdparams",
+        "mt5-large":
+            "https://paddlenlp.bj.bcebos.com/models/transformers/albert/albert-xlarge-v1.pdparams",
+        "mt5-3b":
+            "https://paddlenlp.bj.bcebos.com/models/transformers/albert/albert-xxlarge-v1.pdparams",
+        "mt5-11b":
+            "https://paddlenlp.bj.bcebos.com/models/transformers/albert/albert-base-v2.pdparams",
+        }
+    }
+    base_model_prefix = "transformer"
 
     @property
     def dummy_inputs(self):
