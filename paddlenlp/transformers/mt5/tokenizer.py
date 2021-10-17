@@ -84,7 +84,7 @@ class MT5Tokenizer(PretrainedTokenizer):
             return token_ids + [self.eos_token_id]
 
     def create_token_type_ids_from_sequences(
-        self, token_ids_0: List[int], token_ids_1=None
+        self, token_ids_0, token_ids_1=None
     ):
         eos = [self.eos_token_id]
         if token_ids_1 is None:
