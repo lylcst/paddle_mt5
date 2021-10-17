@@ -61,3 +61,5 @@ from .convbert.modeling import *
 from .convbert.tokenizer import *
 from .mpnet.modeling import *
 from .mpnet.tokenizer import *
+from .mt5.modeling import *
+from .mt5.tokenizer import *
