@@ -621,12 +621,89 @@ class T5PreTrainedModel(PretrainedModel):
     An abstract class to handle weights initialization and a simple interface for downloading and loading pretrained
     models.
     """
-
-    # config_class = T5Config
-    # load_tf_weights = load_tf_weights_in_t5
     base_model_prefix = "transformer"
-    is_parallelizable = True
-    supports_gradient_checkpointing = True
+    model_config_file = "model_config.json"
+    
+    pretrained_init_configuration = {
+        "t5-small": {
+            "d_model": 512,
+            "d_ff": 2048, 
+            "d_kv": 64,
+            "num_heads": 8,
+            "num_layers": 6,
+            "dropout_rate": 0.1,
+            "feed_forward_proj": "relu", 
+            "is_decoder": False,
+            "relative_attention_num_buckets": 32,
+            "layer_norm_epsilon": 1e-6, 
+            "initializer_factor": 1.0,
+            "has_relative_attention_bias": False
+            "vocab_size": 32128
+        },
+        "t5-base": {
+            "d_model": 512,
+            "d_ff": 2048, 
+            "d_kv": 64,
+            "num_heads": 8,
+            "num_layers": 6,
+            "dropout_rate": 0.1,
+            "feed_forward_proj": "relu", 
+            "is_decoder": False,
+            "relative_attention_num_buckets": 32,
+            "layer_norm_epsilon": 1e-6, 
+            "initializer_factor": 1.0,
+            "has_relative_attention_bias": False
+            "vocab_size": 32128
+        },
+        "t5-large": {
+            "d_model": 512,
+            "d_ff": 2048, 
+            "d_kv": 64,
+            "num_heads": 8,
+            "num_layers": 6,
+            "dropout_rate": 0.1,
+            "feed_forward_proj": "relu", 
+            "is_decoder": False,
+            "relative_attention_num_buckets": 32,
+            "layer_norm_epsilon": 1e-6, 
+            "initializer_factor": 1.0,
+            "has_relative_attention_bias": False
+            "vocab_size": 32128
+        },
+        "t5-3b": {
+            "d_model": 512,
+            "d_ff": 2048, 
+            "d_kv": 64,
+            "num_heads": 8,
+            "num_layers": 6,
+            "dropout_rate": 0.1,
+            "feed_forward_proj": "relu", 
+            "is_decoder": False,
+            "relative_attention_num_buckets": 32,
+            "layer_norm_epsilon": 1e-6, 
+            "initializer_factor": 1.0,
+            "has_relative_attention_bias": False
+            "vocab_size": 32128
+        },
+        "t5-11b": {
+            "d_model": 512,
+            "d_ff": 2048, 
+            "d_kv": 64,
+            "num_heads": 8,
+            "num_layers": 6,
+            "dropout_rate": 0.1,
+            "feed_forward_proj": "relu", 
+            "is_decoder": False,
+            "relative_attention_num_buckets": 32,
+            "layer_norm_epsilon": 1e-6, 
+            "initializer_factor": 1.0,
+            "has_relative_attention_bias": False
+            "vocab_size": 32128
+        },
+
+    }
+
+    resource_files_names = {"model_state": "model_state.pdparams"}
 
     @property
     def dummy_inputs(self):
