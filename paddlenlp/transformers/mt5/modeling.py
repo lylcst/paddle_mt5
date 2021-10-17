@@ -575,11 +575,11 @@ class T5PreTrainedModel(PretrainedModel):
     pretrained_init_configuration = {
         "t5-small": {
             "d_model": 512,
-            "d_ff": 2048, 
+            "d_ff": 1024, 
             "d_kv": 64,
             "num_heads": 8,
             "num_layers": 6,
-            "dropout_rate": 0.1,
+            "dropout_rate": 0.0,
             "feed_forward_proj": "relu", 
             "is_decoder": False,
             "relative_attention_num_buckets": 32,
@@ -588,13 +588,14 @@ class T5PreTrainedModel(PretrainedModel):
             "has_relative_attention_bias": False
             "vocab_size": 32128
         },
+
         "t5-base": {
-            "d_model": 512,
+            "d_model": 768,
             "d_ff": 2048, 
             "d_kv": 64,
-            "num_heads": 8,
-            "num_layers": 6,
-            "dropout_rate": 0.1,
+            "num_heads": 12,
+            "num_layers": 12,
+            "dropout_rate": 0.0,
             "feed_forward_proj": "relu", 
             "is_decoder": False,
             "relative_attention_num_buckets": 32,
@@ -604,11 +605,26 @@ class T5PreTrainedModel(PretrainedModel):
             "vocab_size": 32128
         },
         "t5-large": {
-            "d_model": 512,
-            "d_ff": 2048, 
+            "d_model": 1024,
+            "d_ff": 2816, 
             "d_kv": 64,
-            "num_heads": 8,
-            "num_layers": 6,
+            "num_heads": 16,
+            "num_layers": 24,
+            "dropout_rate": 0.0,
+            "feed_forward_proj": "relu", 
+            "is_decoder": False,
+            "relative_attention_num_buckets": 32,
+            "layer_norm_epsilon": 1e-6, 
+            "initializer_factor": 1.0,
+            "has_relative_attention_bias": False
+            "vocab_size": 32128
+        },
+        "t5-xl": {
+            "d_model": 2048,
+            "d_ff": 5120, 
+            "d_kv": 64,
+            "num_heads": 32,
+            "num_layers": 24,
             "dropout_rate": 0.1,
             "feed_forward_proj": "relu", 
             "is_decoder": False,
@@ -618,27 +634,12 @@ class T5PreTrainedModel(PretrainedModel):
             "has_relative_attention_bias": False
             "vocab_size": 32128
         },
-        "t5-3b": {
-            "d_model": 512,
-            "d_ff": 2048, 
+        "t5-xxl": {
+            "d_model": 4096,
+            "d_ff": 10240, 
             "d_kv": 64,
-            "num_heads": 8,
-            "num_layers": 6,
-            "dropout_rate": 0.1,
-            "feed_forward_proj": "relu", 
-            "is_decoder": False,
-            "relative_attention_num_buckets": 32,
-            "layer_norm_epsilon": 1e-6, 
-            "initializer_factor": 1.0,
-            "has_relative_attention_bias": False
-            "vocab_size": 32128
-        },
-        "t5-11b": {
-            "d_model": 512,
-            "d_ff": 2048, 
-            "d_kv": 64,
-            "num_heads": 8,
-            "num_layers": 6,
+            "num_heads": 64,
+            "num_layers": 24,
             "dropout_rate": 0.1,
             "feed_forward_proj": "relu", 
             "is_decoder": False,
